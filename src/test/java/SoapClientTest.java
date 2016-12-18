@@ -50,7 +50,7 @@ public class SoapClientTest {
 
         PerfTestConfig config = JPerfTest.newConfigBuilder()
                 .minThreads(1)
-                .maxThreads(100)
+                .maxThreads(10)
                 .duration(1)
                 .threadIncrement(1)
                 .testFactory(() -> new TestSet())

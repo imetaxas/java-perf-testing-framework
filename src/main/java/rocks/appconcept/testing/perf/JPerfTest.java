@@ -26,7 +26,7 @@ public class JPerfTest {
         List<ExecutorService> finishedExecutors = new ArrayList();
 
             // Initializes the thread manager
-            TestThreadManager testThreadManager = new TestThreadManager();
+            TestThreadManager testThreadManager = new TestThreadManager(config.maxThreads);
 
             final ExecutorService exec[] = new ExecutorService[config.maxThreads];
             final SingleTestRunner testRunner[] = new SingleTestRunner[config.maxThreads];
@@ -64,7 +64,7 @@ public class JPerfTest {
                 for (int i = 0; i < threadCount; i++) {
                     samples += testRunner[i].getCounter().get();
                 }
-                System.out.println(threadCount + " " + actualDuration + " " + samples);
+                //System.out.println(threadCount + " " + actualDuration + " " + samples);
             }
 
         } finally {
@@ -85,19 +85,20 @@ public class JPerfTest {
                 }
             }
             // Gather thread reports
-            /*for (SingleTestRunner r : testRunner) {
+            for (SingleTestRunner r : testRunner) {
                 if (r != null) {
+                    r.getTestReport();
                     testThreadManager.addThread(r);
                 }
-            }*/
+            }
             // Stop monitoring the thread block
             memoryManager.stopMonitoring();
 
             // Return the results
             // Print all the gathered information
 
-            //TestSetResult testSetResult = new TestSetResult(testThreadManager, memoryManager);
-            //testSetResult.printInfo();
+            TestSetResult testSetResult = new TestSetResult(testThreadManager, memoryManager);
+            testSetResult.printInfo();
         }
         // Adds the threads in the manager
         /*for (TestSet testSet : testSets) {

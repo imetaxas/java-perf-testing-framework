@@ -16,8 +16,15 @@ public class TestThreadManager {
     private long sumSystemTimeNano;
     private long sumUserTimeNano;
 
+    private int median = 1;
+
     public TestThreadManager() {
         threads = new ArrayList<>();
+    }
+
+    public TestThreadManager(int median) {
+        threads = new ArrayList<>();
+        this.median = median;
     }
 
     /**
@@ -31,7 +38,7 @@ public class TestThreadManager {
         for (TestReport report : getReports()) {
             sumWallClockTime += report.getEndWallClockTime();
         }
-        return sumWallClockTime;
+        return sumWallClockTime / median;
     }
 
     /**
@@ -45,7 +52,7 @@ public class TestThreadManager {
         for (TestReport report : getReports()) {
             sumUserTimeNano += report.getEndUserTimeNano();
         }
-        return sumUserTimeNano;
+        return sumUserTimeNano / median;
     }
 
     /**
@@ -59,11 +66,11 @@ public class TestThreadManager {
         for (TestReport report : getReports()) {
             sumSystemTimeNano += report.getEndSystemTimeNano();
         }
-        return sumSystemTimeNano;
+        return sumSystemTimeNano / median;
     }
 
     /**
-     * Returns the thread that runs in a given time in the past
+     * Returns the thread that runs in a given time in the past (when threads run sequentially)
      *
      * @param time that the returned thread run before it finishes
      * @return the thread that run in a given time

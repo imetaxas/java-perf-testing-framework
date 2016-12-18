@@ -32,28 +32,31 @@ public class SingleTestRunner implements Runnable {
      * method is invoked.
      */
     public void run() {
-            //long now = System.currentTimeMillis();
+
+            long now = System.currentTimeMillis();
+            //System.out.println("1: " + this.getClass().getName() + "#" + id + ", " + (System.currentTimeMillis()) + " ms");
             try {
 
                 test.setUp();
-                //this.testReport = new TestReport(id, this.getClass().getName());
+                this.testReport = new TestReport(id, this.getClass().getName());
                 while (alive.get()) {
                     test.test(this.id);
                     counter.incrementAndGet();
                 }
-                //System.out.println(this.getClass().getName() + "#" + id + ", " + (System.currentTimeMillis() - now) + " ms");
+                //long stop = System.currentTimeMillis();
+                //System.out.println("2: " + this.getClass().getName() + "#" + id + ", " + stop + " " + (stop - now) + " ms");
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 try {
                     test.tearDown();
-                    //this.testReport.stopTimers();
-
+                    this.testReport.stopTimers();
                     //testReport.printInfo();
                 } catch (Exception e) {
                     // ignore errors in tearDown for now
                 }
             }
+
     }
 
     /** Terminate the thread. */
